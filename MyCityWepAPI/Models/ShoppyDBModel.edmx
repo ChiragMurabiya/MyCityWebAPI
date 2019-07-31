@@ -1,0 +1,611 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ShoppyDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="tblCategories">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Active" Type="bit" />
+          <Property Name="Created" Type="datetime" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="Updated" Type="datetime" />
+          <Property Name="UpdatedBy" Type="int" />
+        </EntityType>
+        <EntityType Name="tblCities">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StateID" Type="int" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Active" Type="bit" />
+          <Property Name="Created" Type="datetime" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="Updated" Type="datetime" />
+          <Property Name="UpdatedBy" Type="int" />
+        </EntityType>
+        <EntityType Name="tblRoles">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RoleName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Active" Type="bit" />
+          <Property Name="Created" Type="datetime" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="Updated" Type="datetime" />
+          <Property Name="UpdatedBy" Type="int" />
+        </EntityType>
+        <EntityType Name="tblShopImages">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ShopID" Type="int" />
+          <Property Name="ImageName" Type="nvarchar" MaxLength="500" />
+          <Property Name="ImagePath" Type="nvarchar" MaxLength="500" />
+          <Property Name="Active" Type="bit" />
+          <Property Name="Created" Type="datetime" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="Updated" Type="datetime" />
+          <Property Name="UpdatedBy" Type="int" />
+        </EntityType>
+        <EntityType Name="tblShops">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" />
+          <Property Name="CategoryID" Type="int" />
+          <Property Name="CityID" Type="int" />
+          <Property Name="StateID" Type="int" />
+          <Property Name="Name" Type="nvarchar" MaxLength="200" />
+          <Property Name="Address" Type="nvarchar" MaxLength="200" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="15" />
+          <Property Name="Mobile" Type="nvarchar" MaxLength="15" />
+          <Property Name="Active" Type="bit" />
+          <Property Name="Created" Type="datetime" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="Updated" Type="datetime" />
+          <Property Name="UpdatedBy" Type="int" />
+        </EntityType>
+        <EntityType Name="tblStates">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Active" Type="bit" />
+          <Property Name="Created" Type="datetime" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="Updated" Type="datetime" />
+          <Property Name="UpdatedBy" Type="int" />
+        </EntityType>
+        <EntityType Name="tblUsers">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RoleID" Type="int" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="50" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="50" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="50" />
+          <Property Name="EmailAddress" Type="nvarchar" MaxLength="100" />
+          <Property Name="Password" Type="nvarchar" MaxLength="50" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="15" />
+          <Property Name="Mobile" Type="nvarchar" MaxLength="15" />
+          <Property Name="IsAdmin" Type="bit" />
+          <Property Name="Active" Type="bit" />
+          <Property Name="Created" Type="datetime" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="Updated" Type="datetime" />
+          <Property Name="UpdatedBy" Type="int" />
+        </EntityType>
+        <Association Name="FK_tblCities_tblCities">
+          <End Role="tblStates" Type="Self.tblStates" Multiplicity="0..1" />
+          <End Role="tblCities" Type="Self.tblCities" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblStates">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblCities">
+              <PropertyRef Name="StateID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblShopImages_tblShops">
+          <End Role="tblShops" Type="Self.tblShops" Multiplicity="0..1" />
+          <End Role="tblShopImages" Type="Self.tblShopImages" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblShops">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblShopImages">
+              <PropertyRef Name="ShopID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblShops_tblCategories">
+          <End Role="tblCategories" Type="Self.tblCategories" Multiplicity="0..1" />
+          <End Role="tblShops" Type="Self.tblShops" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblCategories">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblShops">
+              <PropertyRef Name="CategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblShops_tblCities">
+          <End Role="tblCities" Type="Self.tblCities" Multiplicity="0..1" />
+          <End Role="tblShops" Type="Self.tblShops" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblCities">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblShops">
+              <PropertyRef Name="CityID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblShops_tblStates">
+          <End Role="tblStates" Type="Self.tblStates" Multiplicity="0..1" />
+          <End Role="tblShops" Type="Self.tblShops" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblStates">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblShops">
+              <PropertyRef Name="StateID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblShops_tblUsers">
+          <End Role="tblUsers" Type="Self.tblUsers" Multiplicity="0..1" />
+          <End Role="tblShops" Type="Self.tblShops" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblUsers">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblShops">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblUsers_tblRoles">
+          <End Role="tblRoles" Type="Self.tblRoles" Multiplicity="0..1" />
+          <End Role="tblUsers" Type="Self.tblUsers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblRoles">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblUsers">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ShoppyDBModelStoreContainer">
+          <EntitySet Name="tblCategories" EntityType="Self.tblCategories" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblCities" EntityType="Self.tblCities" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblRoles" EntityType="Self.tblRoles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblShopImages" EntityType="Self.tblShopImages" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblShops" EntityType="Self.tblShops" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblStates" EntityType="Self.tblStates" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblUsers" EntityType="Self.tblUsers" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_tblCities_tblCities" Association="Self.FK_tblCities_tblCities">
+            <End Role="tblStates" EntitySet="tblStates" />
+            <End Role="tblCities" EntitySet="tblCities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblShopImages_tblShops" Association="Self.FK_tblShopImages_tblShops">
+            <End Role="tblShops" EntitySet="tblShops" />
+            <End Role="tblShopImages" EntitySet="tblShopImages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblShops_tblCategories" Association="Self.FK_tblShops_tblCategories">
+            <End Role="tblCategories" EntitySet="tblCategories" />
+            <End Role="tblShops" EntitySet="tblShops" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblShops_tblCities" Association="Self.FK_tblShops_tblCities">
+            <End Role="tblCities" EntitySet="tblCities" />
+            <End Role="tblShops" EntitySet="tblShops" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblShops_tblStates" Association="Self.FK_tblShops_tblStates">
+            <End Role="tblStates" EntitySet="tblStates" />
+            <End Role="tblShops" EntitySet="tblShops" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblShops_tblUsers" Association="Self.FK_tblShops_tblUsers">
+            <End Role="tblUsers" EntitySet="tblUsers" />
+            <End Role="tblShops" EntitySet="tblShops" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblUsers_tblRoles" Association="Self.FK_tblUsers_tblRoles">
+            <End Role="tblRoles" EntitySet="tblRoles" />
+            <End Role="tblUsers" EntitySet="tblUsers" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ShoppyDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="tblCategory">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Active" Type="Boolean" />
+          <Property Name="Created" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="Updated" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedBy" Type="Int32" />
+          <NavigationProperty Name="tblShops" Relationship="Self.FK_tblShops_tblCategories" FromRole="tblCategories" ToRole="tblShops" />
+        </EntityType>
+        <EntityType Name="tblCity">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StateID" Type="Int32" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Active" Type="Boolean" />
+          <Property Name="Created" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="Updated" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedBy" Type="Int32" />
+          <NavigationProperty Name="tblState" Relationship="Self.FK_tblCities_tblCities" FromRole="tblCities" ToRole="tblStates" />
+          <NavigationProperty Name="tblShops" Relationship="Self.FK_tblShops_tblCities" FromRole="tblCities" ToRole="tblShops" />
+        </EntityType>
+        <EntityType Name="tblRole">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoleName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Active" Type="Boolean" />
+          <Property Name="Created" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="Updated" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedBy" Type="Int32" />
+          <NavigationProperty Name="tblUsers" Relationship="Self.FK_tblUsers_tblRoles" FromRole="tblRoles" ToRole="tblUsers" />
+        </EntityType>
+        <EntityType Name="tblShopImage">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ShopID" Type="Int32" />
+          <Property Name="ImageName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ImagePath" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Active" Type="Boolean" />
+          <Property Name="Created" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="Updated" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedBy" Type="Int32" />
+          <NavigationProperty Name="tblShop" Relationship="Self.FK_tblShopImages_tblShops" FromRole="tblShopImages" ToRole="tblShops" />
+        </EntityType>
+        <EntityType Name="tblShop">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" />
+          <Property Name="CategoryID" Type="Int32" />
+          <Property Name="CityID" Type="Int32" />
+          <Property Name="StateID" Type="Int32" />
+          <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="Mobile" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="Active" Type="Boolean" />
+          <Property Name="Created" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="Updated" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedBy" Type="Int32" />
+          <NavigationProperty Name="tblCategory" Relationship="Self.FK_tblShops_tblCategories" FromRole="tblShops" ToRole="tblCategories" />
+          <NavigationProperty Name="tblCity" Relationship="Self.FK_tblShops_tblCities" FromRole="tblShops" ToRole="tblCities" />
+          <NavigationProperty Name="tblShopImages" Relationship="Self.FK_tblShopImages_tblShops" FromRole="tblShops" ToRole="tblShopImages" />
+          <NavigationProperty Name="tblState" Relationship="Self.FK_tblShops_tblStates" FromRole="tblShops" ToRole="tblStates" />
+          <NavigationProperty Name="tblUser" Relationship="Self.FK_tblShops_tblUsers" FromRole="tblShops" ToRole="tblUsers" />
+        </EntityType>
+        <EntityType Name="tblState">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Active" Type="Boolean" />
+          <Property Name="Created" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="Updated" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedBy" Type="Int32" />
+          <NavigationProperty Name="tblCities" Relationship="Self.FK_tblCities_tblCities" FromRole="tblStates" ToRole="tblCities" />
+          <NavigationProperty Name="tblShops" Relationship="Self.FK_tblShops_tblStates" FromRole="tblStates" ToRole="tblShops" />
+        </EntityType>
+        <EntityType Name="tblUser">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoleID" Type="Int32" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EmailAddress" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="Mobile" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="IsAdmin" Type="Boolean" />
+          <Property Name="Active" Type="Boolean" />
+          <Property Name="Created" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="Updated" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedBy" Type="Int32" />
+          <NavigationProperty Name="tblRole" Relationship="Self.FK_tblUsers_tblRoles" FromRole="tblUsers" ToRole="tblRoles" />
+          <NavigationProperty Name="tblShops" Relationship="Self.FK_tblShops_tblUsers" FromRole="tblUsers" ToRole="tblShops" />
+        </EntityType>
+        <Association Name="FK_tblShops_tblCategories">
+          <End Role="tblCategories" Type="Self.tblCategory" Multiplicity="0..1" />
+          <End Role="tblShops" Type="Self.tblShop" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblCategories">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblShops">
+              <PropertyRef Name="CategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblCities_tblCities">
+          <End Role="tblStates" Type="Self.tblState" Multiplicity="0..1" />
+          <End Role="tblCities" Type="Self.tblCity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblStates">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblCities">
+              <PropertyRef Name="StateID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblShops_tblCities">
+          <End Role="tblCities" Type="Self.tblCity" Multiplicity="0..1" />
+          <End Role="tblShops" Type="Self.tblShop" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblCities">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblShops">
+              <PropertyRef Name="CityID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblUsers_tblRoles">
+          <End Role="tblRoles" Type="Self.tblRole" Multiplicity="0..1" />
+          <End Role="tblUsers" Type="Self.tblUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblRoles">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblUsers">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblShopImages_tblShops">
+          <End Role="tblShops" Type="Self.tblShop" Multiplicity="0..1" />
+          <End Role="tblShopImages" Type="Self.tblShopImage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblShops">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblShopImages">
+              <PropertyRef Name="ShopID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblShops_tblStates">
+          <End Role="tblStates" Type="Self.tblState" Multiplicity="0..1" />
+          <End Role="tblShops" Type="Self.tblShop" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblStates">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblShops">
+              <PropertyRef Name="StateID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblShops_tblUsers">
+          <End Role="tblUsers" Type="Self.tblUser" Multiplicity="0..1" />
+          <End Role="tblShops" Type="Self.tblShop" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblUsers">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblShops">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ShoppyDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="tblCategories" EntityType="Self.tblCategory" />
+          <EntitySet Name="tblCities" EntityType="Self.tblCity" />
+          <EntitySet Name="tblRoles" EntityType="Self.tblRole" />
+          <EntitySet Name="tblShopImages" EntityType="Self.tblShopImage" />
+          <EntitySet Name="tblShops" EntityType="Self.tblShop" />
+          <EntitySet Name="tblStates" EntityType="Self.tblState" />
+          <EntitySet Name="tblUsers" EntityType="Self.tblUser" />
+          <AssociationSet Name="FK_tblShops_tblCategories" Association="Self.FK_tblShops_tblCategories">
+            <End Role="tblCategories" EntitySet="tblCategories" />
+            <End Role="tblShops" EntitySet="tblShops" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblCities_tblCities" Association="Self.FK_tblCities_tblCities">
+            <End Role="tblStates" EntitySet="tblStates" />
+            <End Role="tblCities" EntitySet="tblCities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblShops_tblCities" Association="Self.FK_tblShops_tblCities">
+            <End Role="tblCities" EntitySet="tblCities" />
+            <End Role="tblShops" EntitySet="tblShops" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblUsers_tblRoles" Association="Self.FK_tblUsers_tblRoles">
+            <End Role="tblRoles" EntitySet="tblRoles" />
+            <End Role="tblUsers" EntitySet="tblUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblShopImages_tblShops" Association="Self.FK_tblShopImages_tblShops">
+            <End Role="tblShops" EntitySet="tblShops" />
+            <End Role="tblShopImages" EntitySet="tblShopImages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblShops_tblStates" Association="Self.FK_tblShops_tblStates">
+            <End Role="tblStates" EntitySet="tblStates" />
+            <End Role="tblShops" EntitySet="tblShops" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblShops_tblUsers" Association="Self.FK_tblShops_tblUsers">
+            <End Role="tblUsers" EntitySet="tblUsers" />
+            <End Role="tblShops" EntitySet="tblShops" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ShoppyDBModelStoreContainer" CdmEntityContainer="ShoppyDBEntities">
+          <EntitySetMapping Name="tblCategories">
+            <EntityTypeMapping TypeName="ShoppyDBModel.tblCategory">
+              <MappingFragment StoreEntitySet="tblCategories">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="Updated" ColumnName="Updated" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblCities">
+            <EntityTypeMapping TypeName="ShoppyDBModel.tblCity">
+              <MappingFragment StoreEntitySet="tblCities">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="StateID" ColumnName="StateID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="Updated" ColumnName="Updated" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblRoles">
+            <EntityTypeMapping TypeName="ShoppyDBModel.tblRole">
+              <MappingFragment StoreEntitySet="tblRoles">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="Updated" ColumnName="Updated" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblShopImages">
+            <EntityTypeMapping TypeName="ShoppyDBModel.tblShopImage">
+              <MappingFragment StoreEntitySet="tblShopImages">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ShopID" ColumnName="ShopID" />
+                <ScalarProperty Name="ImageName" ColumnName="ImageName" />
+                <ScalarProperty Name="ImagePath" ColumnName="ImagePath" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="Updated" ColumnName="Updated" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblShops">
+            <EntityTypeMapping TypeName="ShoppyDBModel.tblShop">
+              <MappingFragment StoreEntitySet="tblShops">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
+                <ScalarProperty Name="CityID" ColumnName="CityID" />
+                <ScalarProperty Name="StateID" ColumnName="StateID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="Updated" ColumnName="Updated" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblStates">
+            <EntityTypeMapping TypeName="ShoppyDBModel.tblState">
+              <MappingFragment StoreEntitySet="tblStates">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="Updated" ColumnName="Updated" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblUsers">
+            <EntityTypeMapping TypeName="ShoppyDBModel.tblUser">
+              <MappingFragment StoreEntitySet="tblUsers">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="IsAdmin" ColumnName="IsAdmin" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="Updated" ColumnName="Updated" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

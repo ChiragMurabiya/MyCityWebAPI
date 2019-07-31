@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="04bc38b897194c8a9386bccaf9d85b26" Name="Diagram1">
+        <EntityTypeShape EntityType="ShoppyDBModel.tblCategory" Width="1.5" PointX="3" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ShoppyDBModel.tblCity" Width="1.5" PointX="3" PointY="1.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ShoppyDBModel.tblRole" Width="1.5" PointX="0.75" PointY="10.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ShoppyDBModel.tblShopImage" Width="1.5" PointX="7.5" PointY="1.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ShoppyDBModel.tblShop" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="ShoppyDBModel.tblState" Width="1.5" PointX="0.75" PointY="2" IsExpanded="true" />
+        <EntityTypeShape EntityType="ShoppyDBModel.tblUser" Width="1.5" PointX="3" PointY="10" IsExpanded="true" />
+        <AssociationConnector Association="ShoppyDBModel.FK_tblShops_tblCategories" ManuallyRouted="false" />
+        <AssociationConnector Association="ShoppyDBModel.FK_tblCities_tblCities" ManuallyRouted="false" />
+        <AssociationConnector Association="ShoppyDBModel.FK_tblShops_tblCities" ManuallyRouted="false" />
+        <AssociationConnector Association="ShoppyDBModel.FK_tblUsers_tblRoles" ManuallyRouted="false" />
+        <AssociationConnector Association="ShoppyDBModel.FK_tblShopImages_tblShops" ManuallyRouted="false" />
+        <AssociationConnector Association="ShoppyDBModel.FK_tblShops_tblStates" ManuallyRouted="false" />
+        <AssociationConnector Association="ShoppyDBModel.FK_tblShops_tblUsers" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
