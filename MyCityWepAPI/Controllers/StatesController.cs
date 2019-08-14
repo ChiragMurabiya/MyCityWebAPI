@@ -97,8 +97,8 @@ namespace MyCityWepAPI.Controllers
                 throw new ArgumentNullException("tblState");
             }
 
-            var data = db.tblStates.Where(w => w.ID != tblState.ID).FirstOrDefault();
-            if (data == null)
+            var data = db.tblStates.Where(w => w.ID == tblState.ID).Count();//.FirstOrDefault();
+            if (data >= 0)
             {
                 tblState state = new tblState();
                 state.ID = tblState.ID;
@@ -151,17 +151,27 @@ namespace MyCityWepAPI.Controllers
         [ResponseType(typeof(tblState))]
         public IHttpActionResult DeletetblState(int id)
         {
-            tblState tblState = db.tblStates.Find(id);
-            if (tblState == null)
+            var data = db.tblCities.Where(w => w.StateID == id).Count();
+
+            if (data > 0)
             {
-                return NotFound();
+                return Ok(new { code = 1, data = "State available in city" });
             }
 
+            var data1 = db.tblShops.Where(w => w.StateID == id).Count();
+            if (data1 > 0)
+            {
+                return Ok(new { code = 2, data = "State available in shops" });
+            }
+
+            tblState tblState = new tblState();
+
+            tblState = db.tblStates.Find(id);
             db.tblStates.Remove(tblState);
             db.SaveChanges();
 
-            return Ok(tblState);
-        }
+            return Ok(new { code = 0, message = "Record deleted successfully" });
+        }        
 
         protected override void Dispose(bool disposing)
         {
