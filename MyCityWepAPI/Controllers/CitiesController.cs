@@ -26,48 +26,92 @@ namespace MyCityWepAPI.Controllers
         [ResponseType(typeof(tblCity))]
         public IHttpActionResult GettblCity(int id)
         {
-            tblCity tblCity = db.tblCities.Find(id);
-            if (tblCity == null)
-            {
-                return NotFound();
-            }
+            //tblCity tblCity = db.tblCities.Find(id);
+            //if (tblCity == null)
+            //{
+            //    return NotFound();
+            //}
+            //return Ok(tblCity);
 
-            return Ok(tblCity);
+            var data = db.tblCities.Where(w => w.ID == id).FirstOrDefault();
+
+            if (data == null)
+            {
+                return Ok(new { code = 1, data = "Not found" });
+            }
+            else
+            {
+                tblCity model = new tblCity();
+                model.ID = data.ID;
+                model.Name = data.Name;
+                model.StateID = data.StateID;
+                model.Created = System.DateTime.Now;
+                model.CreatedBy = data.CreatedBy;
+                model.Updated = System.DateTime.Now;
+                model.UpdatedBy = data.UpdatedBy;
+                model.Active = Convert.ToBoolean(data.Active);
+
+                return Ok(new { code = 0, data = model });
+            }
         }
 
         // PUT: api/Cities/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PuttblCity(int id, tblCity tblCity)
+        public IHttpActionResult PuttblCity(tblCity tblCity)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
+            //if (id != tblCity.ID)
+            //{
+            //    return BadRequest();
+            //}
+            //db.Entry(tblCity).State = EntityState.Modified;
+            //try
+            //{
+            //    db.SaveChanges();
+            //}
+            //catch (DbUpdateConcurrencyException)
+            //{
+            //    if (!tblCityExists(id))
+            //    {
+            //        return NotFound();
+            //    }
+            //    else
+            //    {
+            //        throw;
+            //    }
+            //}
+            //return StatusCode(HttpStatusCode.NoContent);
 
-            if (id != tblCity.ID)
+            if (tblCity == null)
             {
-                return BadRequest();
+                throw new ArgumentNullException("tblCity");
             }
 
-            db.Entry(tblCity).State = EntityState.Modified;
-
-            try
+            var data = db.tblCities.Where(w => w.ID == tblCity.ID).Count();//.FirstOrDefault();
+            if (data >= 0)
             {
+                tblCity city = new tblCity();
+                city.ID = tblCity.ID;
+                city.StateID = tblCity.StateID;
+                city.Name = tblCity.Name;
+                city.Created = System.DateTime.Now;
+                city.CreatedBy = tblCity.CreatedBy;
+                city.Updated = System.DateTime.Now;
+                city.UpdatedBy = tblCity.UpdatedBy;
+                city.Active = Convert.ToBoolean(tblCity.Active);
+
+                db.Entry(city).State = EntityState.Modified;
                 db.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!tblCityExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
 
-            return StatusCode(HttpStatusCode.NoContent);
+                return Ok(new { code = 0, data = "City updated successfully." });
+            }
+            else
+            {
+                return Ok(new { code = 1, data = "City not found." });
+            }
         }
 
         // POST: api/Cities
@@ -79,26 +123,39 @@ namespace MyCityWepAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            db.tblCities.Add(tblCity);
-            db.SaveChanges();
+            var data = db.tblStates.Where(w => w.Name == tblCity.Name).FirstOrDefault();
 
-            return CreatedAtRoute("DefaultApi", new { id = tblCity.ID }, tblCity);
+            if (data == null)
+            {
+
+                db.tblCities.Add(tblCity);
+                db.SaveChanges();
+
+                return Ok(new { code = 0, data = "City added successfully." });
+            }
+            else
+            {
+                return Ok(new { code = 1, data = "City already exists." });
+            }
         }
 
         // DELETE: api/Cities/5
         [ResponseType(typeof(tblCity))]
         public IHttpActionResult DeletetblCity(int id)
         {
-            tblCity tblCity = db.tblCities.Find(id);
-            if (tblCity == null)
+            var data1 = db.tblShops.Where(w => w.CityID == id).Count();
+            if (data1 > 0)
             {
-                return NotFound();
+                return Ok(new { code = 1, data = "City available in shop" });
             }
 
+            tblCity tblCity = new tblCity();
+
+            tblCity = db.tblCities.Find(id);
             db.tblCities.Remove(tblCity);
             db.SaveChanges();
 
-            return Ok(tblCity);
+            return Ok(new { code = 0, message = "Record deleted successfully" });
         }
 
         protected override void Dispose(bool disposing)

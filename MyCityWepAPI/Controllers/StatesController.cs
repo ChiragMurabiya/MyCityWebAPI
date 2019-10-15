@@ -161,7 +161,7 @@ namespace MyCityWepAPI.Controllers
             var data1 = db.tblShops.Where(w => w.StateID == id).Count();
             if (data1 > 0)
             {
-                return Ok(new { code = 2, data = "State available in shops" });
+                return Ok(new { code = 2, data = "State available in shop" });
             }
 
             tblState tblState = new tblState();
