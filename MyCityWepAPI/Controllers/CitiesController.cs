@@ -8,6 +8,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
+using System.Web.Mvc;
 using MyCityWepAPI.Models;
 
 namespace MyCityWepAPI.Controllers
@@ -52,6 +53,22 @@ namespace MyCityWepAPI.Controllers
                 model.Active = Convert.ToBoolean(data.Active);
 
                 return Ok(new { code = 0, data = model });
+            }
+        }
+
+        [ResponseType(typeof(tblCity))]
+        public IHttpActionResult GetCityByStateID(int StateID)
+        {
+            var data = db.tblCities.Where(w => w.StateID == StateID).ToList();
+
+            if (data == null)
+            {
+                return Ok(new { code = 1, data = "Not found" });
+            }
+            else
+            {
+                //return Ok(new { code = 0, data = data });
+                return Ok(data);
             }
         }
 

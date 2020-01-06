@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Core;
+using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
@@ -26,48 +28,75 @@ namespace MyCityWepAPI.Controllers
         [ResponseType(typeof(tblShopImage))]
         public IHttpActionResult GettblShopImage(int id)
         {
-            tblShopImage tblShopImage = db.tblShopImages.Find(id);
-            if (tblShopImage == null)
-            {
-                return NotFound();
-            }
+            try
+            {                
+                var data = db.tblShopImages.Where(w => w.ID == id).FirstOrDefault();
 
-            return Ok(tblShopImage);
+                if (data == null)
+                {
+                    return Ok(new { code = 1, data = "Not found" });
+                }
+                else
+                {
+                    tblShopImage model = new tblShopImage();
+                    model.ID = data.ID;
+                    model.ImageName = data.ImageName;
+                    model.ImagePath = data.ImagePath;
+                    model.ShopID = data.ShopID;
+                    model.Created = System.DateTime.Now;
+                    model.CreatedBy = data.CreatedBy;
+                    model.Updated = System.DateTime.Now;
+                    model.UpdatedBy = data.UpdatedBy;
+                    model.Active = Convert.ToBoolean(data.Active);
+
+                    return Ok(new { code = 0, data = model });
+                }
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
         }
 
         // PUT: api/ShopImages/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PuttblShopImage(int id, tblShopImage tblShopImage)
+        public IHttpActionResult PuttblShopImage(tblShopImage tblShopImage)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != tblShopImage.ID)
+            var data = db.tblShopImages.Where(w => w.ID == tblShopImage.ID).Count();//.FirstOrDefault();
+            if (data >= 0)
             {
-                return BadRequest();
-            }
+                tblShopImage ShopImage = new tblShopImage();
+                ShopImage.ID = tblShopImage.ID;
+                ShopImage.ShopID = tblShopImage.ShopID;
+                ShopImage.ImageName = tblShopImage.ImageName;
+                ShopImage.ImagePath = tblShopImage.ImagePath;
+                ShopImage.Created = System.DateTime.Now;
+                ShopImage.CreatedBy = tblShopImage.CreatedBy;
+                ShopImage.Updated = System.DateTime.Now;
+                ShopImage.UpdatedBy = tblShopImage.UpdatedBy;
+                ShopImage.Active = Convert.ToBoolean(tblShopImage.Active);
 
-            db.Entry(tblShopImage).State = EntityState.Modified;
-
-            try
-            {
-                db.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!tblShopImageExists(id))
+                db.Entry(ShopImage).State = EntityState.Modified;
+                try
                 {
-                    return NotFound();
+                    db.SaveChanges();
                 }
-                else
-                {
-                    throw;
+                catch (OptimisticConcurrencyException)
+                {                    
+                    db.SaveChanges();
                 }
-            }
 
-            return StatusCode(HttpStatusCode.NoContent);
+                return Ok(new { code = 0, data = "Shop Image updated successfully." });
+            }
+            else
+            {
+                return Ok(new { code = 1, data = "Shop Image not found." });
+            }
         }
 
         // POST: api/ShopImages
@@ -82,7 +111,7 @@ namespace MyCityWepAPI.Controllers
             db.tblShopImages.Add(tblShopImage);
             db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = tblShopImage.ID }, tblShopImage);
+            return Ok(new { code = 0, data = "Shop Image added successfully." });
         }
 
         // DELETE: api/ShopImages/5
@@ -98,7 +127,7 @@ namespace MyCityWepAPI.Controllers
             db.tblShopImages.Remove(tblShopImage);
             db.SaveChanges();
 
-            return Ok(tblShopImage);
+            return Ok(new { code = 0, message = "Record deleted successfully" });
         }
 
         protected override void Dispose(bool disposing)
