@@ -32,5 +32,7 @@ namespace MyCityWepAPI.Models
         public virtual DbSet<tblShop> tblShops { get; set; }
         public virtual DbSet<tblState> tblStates { get; set; }
         public virtual DbSet<tblUser> tblUsers { get; set; }
+        public virtual DbSet<tblShopProductImage> tblShopProductImages { get; set; }
+        public virtual DbSet<tblShopProduct> tblShopProducts { get; set; }
     }
 }

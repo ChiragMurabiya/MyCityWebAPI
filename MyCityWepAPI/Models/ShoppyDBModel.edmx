@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="ShoppyDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="ShoppyDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="tblCategories">
           <Key>
             <PropertyRef Name="ID" />
@@ -50,6 +50,38 @@
           <Property Name="ShopID" Type="int" />
           <Property Name="ImageName" Type="nvarchar" MaxLength="500" />
           <Property Name="ImagePath" Type="nvarchar" MaxLength="500" />
+          <Property Name="Active" Type="bit" />
+          <Property Name="Created" Type="datetime" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="Updated" Type="datetime" />
+          <Property Name="UpdatedBy" Type="int" />
+        </EntityType>
+        <EntityType Name="tblShopProductImages">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ShopProductID" Type="int" />
+          <Property Name="ImageName" Type="nvarchar" MaxLength="500" />
+          <Property Name="ImagePath" Type="nvarchar" MaxLength="500" />
+          <Property Name="Active" Type="bit" />
+          <Property Name="Created" Type="datetime" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="Updated" Type="datetime" />
+          <Property Name="UpdatedBy" Type="int" />
+        </EntityType>
+        <EntityType Name="tblShopProducts">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ShopID" Type="int" />
+          <Property Name="Name" Type="nvarchar" MaxLength="200" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="Discount" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="Price" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="IsDisplayOnHomePage" Type="bit" Nullable="false" />
+          <Property Name="DisplayOrder" Type="int" />
           <Property Name="Active" Type="bit" />
           <Property Name="Created" Type="datetime" />
           <Property Name="CreatedBy" Type="int" />
@@ -131,6 +163,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_tblShopProductImages_tblShopProducts">
+          <End Role="tblShopProducts" Type="Self.tblShopProducts" Multiplicity="0..1" />
+          <End Role="tblShopProductImages" Type="Self.tblShopProductImages" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblShopProducts">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblShopProductImages">
+              <PropertyRef Name="ShopProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblShopProducts_tblShops">
+          <End Role="tblShops" Type="Self.tblShops" Multiplicity="0..1" />
+          <End Role="tblShopProducts" Type="Self.tblShopProducts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblShops">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblShopProducts">
+              <PropertyRef Name="ShopID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_tblShops_tblCategories">
           <End Role="tblCategories" Type="Self.tblCategories" Multiplicity="0..1" />
           <End Role="tblShops" Type="Self.tblShops" Multiplicity="*" />
@@ -196,6 +252,8 @@
           <EntitySet Name="tblCities" EntityType="Self.tblCities" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblRoles" EntityType="Self.tblRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblShopImages" EntityType="Self.tblShopImages" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblShopProductImages" EntityType="Self.tblShopProductImages" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblShopProducts" EntityType="Self.tblShopProducts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblShops" EntityType="Self.tblShops" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblStates" EntityType="Self.tblStates" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblUsers" EntityType="Self.tblUsers" Schema="dbo" store:Type="Tables" />
@@ -206,6 +264,14 @@
           <AssociationSet Name="FK_tblShopImages_tblShops" Association="Self.FK_tblShopImages_tblShops">
             <End Role="tblShops" EntitySet="tblShops" />
             <End Role="tblShopImages" EntitySet="tblShopImages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblShopProductImages_tblShopProducts" Association="Self.FK_tblShopProductImages_tblShopProducts">
+            <End Role="tblShopProducts" EntitySet="tblShopProducts" />
+            <End Role="tblShopProductImages" EntitySet="tblShopProductImages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblShopProducts_tblShops" Association="Self.FK_tblShopProducts_tblShops">
+            <End Role="tblShops" EntitySet="tblShops" />
+            <End Role="tblShopProducts" EntitySet="tblShopProducts" />
           </AssociationSet>
           <AssociationSet Name="FK_tblShops_tblCategories" Association="Self.FK_tblShops_tblCategories">
             <End Role="tblCategories" EntitySet="tblCategories" />
@@ -228,8 +294,7 @@
             <End Role="tblUsers" EntitySet="tblUsers" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ShoppyDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -312,6 +377,7 @@
           <NavigationProperty Name="tblShopImages" Relationship="Self.FK_tblShopImages_tblShops" FromRole="tblShops" ToRole="tblShopImages" />
           <NavigationProperty Name="tblState" Relationship="Self.FK_tblShops_tblStates" FromRole="tblShops" ToRole="tblStates" />
           <NavigationProperty Name="tblUser" Relationship="Self.FK_tblShops_tblUsers" FromRole="tblShops" ToRole="tblUsers" />
+          <NavigationProperty Name="tblShopProducts" Relationship="ShoppyDBModel.FK_tblShopProducts_tblShops" FromRole="tblShop" ToRole="tblShopProduct" />
         </EntityType>
         <EntityType Name="tblState">
           <Key>
@@ -469,7 +535,76 @@
             <End Role="tblUsers" EntitySet="tblUsers" />
             <End Role="tblShops" EntitySet="tblShops" />
           </AssociationSet>
+          <EntitySet Name="tblShopProductImages" EntityType="ShoppyDBModel.tblShopProductImage" />
+          <EntitySet Name="tblShopProducts" EntityType="ShoppyDBModel.tblShopProduct" />
+          <AssociationSet Name="FK_tblShopProductImages_tblShopProducts" Association="ShoppyDBModel.FK_tblShopProductImages_tblShopProducts">
+            <End Role="tblShopProduct" EntitySet="tblShopProducts" />
+            <End Role="tblShopProductImage" EntitySet="tblShopProductImages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblShopProducts_tblShops" Association="ShoppyDBModel.FK_tblShopProducts_tblShops">
+            <End Role="tblShop" EntitySet="tblShops" />
+            <End Role="tblShopProduct" EntitySet="tblShopProducts" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="tblShopProductImage">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ShopProductID" Type="Int32" />
+          <Property Name="ImageName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ImagePath" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Active" Type="Boolean" />
+          <Property Name="Created" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="Updated" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedBy" Type="Int32" />
+          <NavigationProperty Name="tblShopProduct" Relationship="ShoppyDBModel.FK_tblShopProductImages_tblShopProducts" FromRole="tblShopProductImage" ToRole="tblShopProduct" />
+        </EntityType>
+        <EntityType Name="tblShopProduct">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ShopID" Type="Int32" />
+          <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Discount" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="Price" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="IsDisplayOnHomePage" Type="Boolean" Nullable="false" />
+          <Property Name="DisplayOrder" Type="Int32" />
+          <Property Name="Active" Type="Boolean" />
+          <Property Name="Created" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="Updated" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedBy" Type="Int32" />
+          <NavigationProperty Name="tblShopProductImages" Relationship="ShoppyDBModel.FK_tblShopProductImages_tblShopProducts" FromRole="tblShopProduct" ToRole="tblShopProductImage" />
+          <NavigationProperty Name="tblShop" Relationship="ShoppyDBModel.FK_tblShopProducts_tblShops" FromRole="tblShopProduct" ToRole="tblShop" />
+        </EntityType>
+        <Association Name="FK_tblShopProductImages_tblShopProducts">
+          <End Type="ShoppyDBModel.tblShopProduct" Role="tblShopProduct" Multiplicity="0..1" />
+          <End Type="ShoppyDBModel.tblShopProductImage" Role="tblShopProductImage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblShopProduct">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblShopProductImage">
+              <PropertyRef Name="ShopProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblShopProducts_tblShops">
+          <End Type="ShoppyDBModel.tblShop" Role="tblShop" Multiplicity="0..1" />
+          <End Type="ShoppyDBModel.tblShopProduct" Role="tblShopProduct" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblShop">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblShopProduct">
+              <PropertyRef Name="ShopID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -582,6 +717,40 @@
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
                 <ScalarProperty Name="Updated" ColumnName="Updated" />
                 <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblShopProductImages">
+            <EntityTypeMapping TypeName="ShoppyDBModel.tblShopProductImage">
+              <MappingFragment StoreEntitySet="tblShopProductImages">
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="Updated" ColumnName="Updated" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="ImagePath" ColumnName="ImagePath" />
+                <ScalarProperty Name="ImageName" ColumnName="ImageName" />
+                <ScalarProperty Name="ShopProductID" ColumnName="ShopProductID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblShopProducts">
+            <EntityTypeMapping TypeName="ShoppyDBModel.tblShopProduct">
+              <MappingFragment StoreEntitySet="tblShopProducts">
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="Updated" ColumnName="Updated" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="DisplayOrder" ColumnName="DisplayOrder" />
+                <ScalarProperty Name="IsDisplayOnHomePage" ColumnName="IsDisplayOnHomePage" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Discount" ColumnName="Discount" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ShopID" ColumnName="ShopID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

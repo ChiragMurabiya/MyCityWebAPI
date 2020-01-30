@@ -19,6 +19,10 @@
         <AssociationConnector Association="ShoppyDBModel.FK_tblShopImages_tblShops" ManuallyRouted="false" />
         <AssociationConnector Association="ShoppyDBModel.FK_tblShops_tblStates" ManuallyRouted="false" />
         <AssociationConnector Association="ShoppyDBModel.FK_tblShops_tblUsers" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="ShoppyDBModel.tblShopProductImage" Width="1.5" PointX="9.75" PointY="7" />
+        <EntityTypeShape EntityType="ShoppyDBModel.tblShopProduct" Width="1.5" PointX="7.5" PointY="6.5" />
+        <AssociationConnector Association="ShoppyDBModel.FK_tblShopProductImages_tblShopProducts" />
+        <AssociationConnector Association="ShoppyDBModel.FK_tblShopProducts_tblShops" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

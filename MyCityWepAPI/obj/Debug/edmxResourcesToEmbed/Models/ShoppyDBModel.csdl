@@ -79,6 +79,7 @@
     <NavigationProperty Name="tblShopImages" Relationship="Self.FK_tblShopImages_tblShops" FromRole="tblShops" ToRole="tblShopImages" />
     <NavigationProperty Name="tblState" Relationship="Self.FK_tblShops_tblStates" FromRole="tblShops" ToRole="tblStates" />
     <NavigationProperty Name="tblUser" Relationship="Self.FK_tblShops_tblUsers" FromRole="tblShops" ToRole="tblUsers" />
+    <NavigationProperty Name="tblShopProducts" Relationship="ShoppyDBModel.FK_tblShopProducts_tblShops" FromRole="tblShop" ToRole="tblShopProduct" />
   </EntityType>
   <EntityType Name="tblState">
     <Key>
@@ -236,5 +237,74 @@
       <End Role="tblUsers" EntitySet="tblUsers" />
       <End Role="tblShops" EntitySet="tblShops" />
     </AssociationSet>
+    <EntitySet Name="tblShopProductImages" EntityType="ShoppyDBModel.tblShopProductImage" />
+    <EntitySet Name="tblShopProducts" EntityType="ShoppyDBModel.tblShopProduct" />
+    <AssociationSet Name="FK_tblShopProductImages_tblShopProducts" Association="ShoppyDBModel.FK_tblShopProductImages_tblShopProducts">
+      <End Role="tblShopProduct" EntitySet="tblShopProducts" />
+      <End Role="tblShopProductImage" EntitySet="tblShopProductImages" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tblShopProducts_tblShops" Association="ShoppyDBModel.FK_tblShopProducts_tblShops">
+      <End Role="tblShop" EntitySet="tblShops" />
+      <End Role="tblShopProduct" EntitySet="tblShopProducts" />
+    </AssociationSet>
   </EntityContainer>
+  <EntityType Name="tblShopProductImage">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ShopProductID" Type="Int32" />
+    <Property Name="ImageName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="ImagePath" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="Active" Type="Boolean" />
+    <Property Name="Created" Type="DateTime" Precision="3" />
+    <Property Name="CreatedBy" Type="Int32" />
+    <Property Name="Updated" Type="DateTime" Precision="3" />
+    <Property Name="UpdatedBy" Type="Int32" />
+    <NavigationProperty Name="tblShopProduct" Relationship="ShoppyDBModel.FK_tblShopProductImages_tblShopProducts" FromRole="tblShopProductImage" ToRole="tblShopProduct" />
+  </EntityType>
+  <EntityType Name="tblShopProduct">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ShopID" Type="Int32" />
+    <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Discount" Type="Decimal" Precision="10" Scale="2" />
+    <Property Name="Price" Type="Decimal" Precision="10" Scale="2" />
+    <Property Name="IsDisplayOnHomePage" Type="Boolean" Nullable="false" />
+    <Property Name="DisplayOrder" Type="Int32" />
+    <Property Name="Active" Type="Boolean" />
+    <Property Name="Created" Type="DateTime" Precision="3" />
+    <Property Name="CreatedBy" Type="Int32" />
+    <Property Name="Updated" Type="DateTime" Precision="3" />
+    <Property Name="UpdatedBy" Type="Int32" />
+    <NavigationProperty Name="tblShopProductImages" Relationship="ShoppyDBModel.FK_tblShopProductImages_tblShopProducts" FromRole="tblShopProduct" ToRole="tblShopProductImage" />
+    <NavigationProperty Name="tblShop" Relationship="ShoppyDBModel.FK_tblShopProducts_tblShops" FromRole="tblShopProduct" ToRole="tblShop" />
+  </EntityType>
+  <Association Name="FK_tblShopProductImages_tblShopProducts">
+    <End Type="ShoppyDBModel.tblShopProduct" Role="tblShopProduct" Multiplicity="0..1" />
+    <End Type="ShoppyDBModel.tblShopProductImage" Role="tblShopProductImage" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblShopProduct">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="tblShopProductImage">
+        <PropertyRef Name="ShopProductID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tblShopProducts_tblShops">
+    <End Type="ShoppyDBModel.tblShop" Role="tblShop" Multiplicity="0..1" />
+    <End Type="ShoppyDBModel.tblShopProduct" Role="tblShopProduct" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblShop">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="tblShopProduct">
+        <PropertyRef Name="ShopID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema>

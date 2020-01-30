@@ -17,7 +17,8 @@
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
-    <Use64BitIISExpress />
+    <Use64BitIISExpress>
+    </Use64BitIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -167,6 +168,8 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\ShopImagesController.cs" />
+    <Compile Include="Controllers\ShopProductImagesController.cs" />
+    <Compile Include="Controllers\ShopProductsController.cs" />
     <Compile Include="Controllers\ShopsController.cs" />
     <Compile Include="Controllers\StatesController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
@@ -175,6 +178,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\ShopAndImageModel.cs" />
+    <Compile Include="Models\ShopProductAndImage.cs" />
     <Compile Include="Models\ShoppyDBModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -203,6 +207,12 @@
       <DependentUpon>ShoppyDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\tblShopImage.cs">
+      <DependentUpon>ShoppyDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\tblShopProduct.cs">
+      <DependentUpon>ShoppyDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\tblShopProductImage.cs">
       <DependentUpon>ShoppyDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\tblState.cs">

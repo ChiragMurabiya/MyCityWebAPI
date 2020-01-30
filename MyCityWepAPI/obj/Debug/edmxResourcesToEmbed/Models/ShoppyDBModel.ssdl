@@ -51,6 +51,38 @@
     <Property Name="Updated" Type="datetime" />
     <Property Name="UpdatedBy" Type="int" />
   </EntityType>
+  <EntityType Name="tblShopProductImages">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ShopProductID" Type="int" />
+    <Property Name="ImageName" Type="nvarchar" MaxLength="500" />
+    <Property Name="ImagePath" Type="nvarchar" MaxLength="500" />
+    <Property Name="Active" Type="bit" />
+    <Property Name="Created" Type="datetime" />
+    <Property Name="CreatedBy" Type="int" />
+    <Property Name="Updated" Type="datetime" />
+    <Property Name="UpdatedBy" Type="int" />
+  </EntityType>
+  <EntityType Name="tblShopProducts">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ShopID" Type="int" />
+    <Property Name="Name" Type="nvarchar" MaxLength="200" />
+    <Property Name="Description" Type="nvarchar(max)" />
+    <Property Name="Discount" Type="decimal" Precision="10" Scale="2" />
+    <Property Name="Price" Type="decimal" Precision="10" Scale="2" />
+    <Property Name="IsDisplayOnHomePage" Type="bit" Nullable="false" />
+    <Property Name="DisplayOrder" Type="int" />
+    <Property Name="Active" Type="bit" />
+    <Property Name="Created" Type="datetime" />
+    <Property Name="CreatedBy" Type="int" />
+    <Property Name="Updated" Type="datetime" />
+    <Property Name="UpdatedBy" Type="int" />
+  </EntityType>
   <EntityType Name="tblShops">
     <Key>
       <PropertyRef Name="ID" />
@@ -126,6 +158,30 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_tblShopProductImages_tblShopProducts">
+    <End Role="tblShopProducts" Type="Self.tblShopProducts" Multiplicity="0..1" />
+    <End Role="tblShopProductImages" Type="Self.tblShopProductImages" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblShopProducts">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="tblShopProductImages">
+        <PropertyRef Name="ShopProductID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tblShopProducts_tblShops">
+    <End Role="tblShops" Type="Self.tblShops" Multiplicity="0..1" />
+    <End Role="tblShopProducts" Type="Self.tblShopProducts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblShops">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="tblShopProducts">
+        <PropertyRef Name="ShopID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_tblShops_tblCategories">
     <End Role="tblCategories" Type="Self.tblCategories" Multiplicity="0..1" />
     <End Role="tblShops" Type="Self.tblShops" Multiplicity="*" />
@@ -191,6 +247,8 @@
     <EntitySet Name="tblCities" EntityType="Self.tblCities" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblRoles" EntityType="Self.tblRoles" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblShopImages" EntityType="Self.tblShopImages" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblShopProductImages" EntityType="Self.tblShopProductImages" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tblShopProducts" EntityType="Self.tblShopProducts" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblShops" EntityType="Self.tblShops" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblStates" EntityType="Self.tblStates" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tblUsers" EntityType="Self.tblUsers" Schema="dbo" store:Type="Tables" />
@@ -201,6 +259,14 @@
     <AssociationSet Name="FK_tblShopImages_tblShops" Association="Self.FK_tblShopImages_tblShops">
       <End Role="tblShops" EntitySet="tblShops" />
       <End Role="tblShopImages" EntitySet="tblShopImages" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tblShopProductImages_tblShopProducts" Association="Self.FK_tblShopProductImages_tblShopProducts">
+      <End Role="tblShopProducts" EntitySet="tblShopProducts" />
+      <End Role="tblShopProductImages" EntitySet="tblShopProductImages" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tblShopProducts_tblShops" Association="Self.FK_tblShopProducts_tblShops">
+      <End Role="tblShops" EntitySet="tblShops" />
+      <End Role="tblShopProducts" EntitySet="tblShopProducts" />
     </AssociationSet>
     <AssociationSet Name="FK_tblShops_tblCategories" Association="Self.FK_tblShops_tblCategories">
       <End Role="tblCategories" EntitySet="tblCategories" />

@@ -12,37 +12,30 @@ namespace MyCityWepAPI.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class tblShop
+    public partial class tblShopProduct
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public tblShop()
+        public tblShopProduct()
         {
-            this.tblShopImages = new HashSet<tblShopImage>();
-            this.tblShopProducts = new HashSet<tblShopProduct>();
+            this.tblShopProductImages = new HashSet<tblShopProductImage>();
         }
     
         public int ID { get; set; }
-        public Nullable<int> UserID { get; set; }
-        public Nullable<int> CategoryID { get; set; }
-        public Nullable<int> CityID { get; set; }
-        public Nullable<int> StateID { get; set; }
+        public Nullable<int> ShopID { get; set; }
         public string Name { get; set; }
-        public string Address { get; set; }
-        public string Phone { get; set; }
-        public string Mobile { get; set; }
+        public string Description { get; set; }
+        public Nullable<decimal> Discount { get; set; }
+        public Nullable<decimal> Price { get; set; }
+        public bool IsDisplayOnHomePage { get; set; }
+        public Nullable<int> DisplayOrder { get; set; }
         public Nullable<bool> Active { get; set; }
         public Nullable<System.DateTime> Created { get; set; }
         public Nullable<int> CreatedBy { get; set; }
         public Nullable<System.DateTime> Updated { get; set; }
         public Nullable<int> UpdatedBy { get; set; }
     
-        public virtual tblCategory tblCategory { get; set; }
-        public virtual tblCity tblCity { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tblShopImage> tblShopImages { get; set; }
-        public virtual tblState tblState { get; set; }
-        public virtual tblUser tblUser { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tblShopProduct> tblShopProducts { get; set; }
+        public virtual ICollection<tblShopProductImage> tblShopProductImages { get; set; }
+        public virtual tblShop tblShop { get; set; }
     }
 }
