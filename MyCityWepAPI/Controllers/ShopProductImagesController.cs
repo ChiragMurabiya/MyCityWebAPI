@@ -54,6 +54,22 @@ namespace MyCityWepAPI.Controllers
             return Ok(ShopProductData);
         }
 
+        [ResponseType(typeof(tblShop))]
+        [System.Web.Http.Route("api/GetShopProductImageByShopProductID")]
+        public IHttpActionResult GetShopProductImagesByShopID(int ShopProductID)
+        {
+            var ShopProductImageData = db.tblShopProductImages.Where(w => w.ShopProductID == ShopProductID)
+                                   .Select(s => new ShopProductAndImage
+                                   {
+                                       ID = s.ID,
+                                       ImageName = s.ImageName,
+                                       ImageActive = s.Active
+                                   }
+                                            ).ToList();
+
+            return Ok(ShopProductImageData);
+        }
+
         // PUT: api/ShopProductImages/5
         [ResponseType(typeof(void))]
         public IHttpActionResult PuttblShopProductImage(int id, tblShopProductImage tblShopProductImage)
@@ -101,7 +117,14 @@ namespace MyCityWepAPI.Controllers
             db.tblShopProductImages.Add(tblShopProductImage);
             db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = tblShopProductImage.ID }, tblShopProductImage);
+            return Ok(new { code = 0, data = "Image added successfully." });
+        }
+
+        [HttpPost]
+        [System.Web.Http.Route("api/AddShopProductImages")]
+        public IEnumerable<ShopProductAndImage> PostProductImages([FromBody]IEnumerable<ShopProductAndImage> pList)
+        {
+            return null;
         }
 
         // DELETE: api/ShopProductImages/5

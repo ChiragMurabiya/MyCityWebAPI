@@ -163,6 +163,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <Compile Include="Controllers\BannersController.cs" />
     <Compile Include="Controllers\CategoriesController.cs" />
     <Compile Include="Controllers\CitiesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -193,6 +194,9 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ShoppyDBModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\tblBanner.cs">
+      <DependentUpon>ShoppyDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\tblCategory.cs">
       <DependentUpon>ShoppyDBModel.tt</DependentUpon>

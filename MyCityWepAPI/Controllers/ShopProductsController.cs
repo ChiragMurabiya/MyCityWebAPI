@@ -26,13 +26,42 @@ namespace MyCityWepAPI.Controllers
         [ResponseType(typeof(tblShopProduct))]
         public IHttpActionResult GettblShopProduct(int id)
         {
-            tblShopProduct tblShopProduct = db.tblShopProducts.Find(id);
-            if (tblShopProduct == null)
+            try
             {
-                return NotFound();
-            }
+                //tblShopProduct tblShopProduct = db.tblShopProducts.Find(id);
+                //if (tblShopProduct == null)
+                //{
+                //    return NotFound();
+                //}
+                //return Ok(tblShopProduct);
+                var data = db.tblShopProducts.Where(w => w.ID == id).FirstOrDefault();
 
-            return Ok(tblShopProduct);
+                if (data == null)
+                {
+                    return Ok(new { code = 1, data = "Not found" });
+                }
+                else
+                {
+                    tblShopProduct model = new tblShopProduct();
+                    model.ID = data.ID;
+                    model.ShopID = data.ShopID;
+                    model.Name = data.Name;
+                    model.Description = data.Description;
+                    model.Discount = data.Discount;
+                    model.Price = data.Price;
+                    model.Created = System.DateTime.Now;
+                    model.CreatedBy = data.CreatedBy;
+                    model.Updated = System.DateTime.Now;
+                    model.UpdatedBy = data.UpdatedBy;
+                    model.Active = Convert.ToBoolean(data.Active);
+
+                    return Ok(new { code = 0, data = model });
+                }
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
         }
 
         // GET: api/ShopProducts/5
@@ -42,14 +71,14 @@ namespace MyCityWepAPI.Controllers
             //tblShopProduct tblShopProduct = db.tblShopProducts.Find(ShopId);
             var data = db.tblShopProducts.Where(w => w.ShopID == ShopID).ToList();
 
-            
+
 
             return Ok(new { code = 0, data = data });
         }
 
         // PUT: api/ShopProducts/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PuttblShopProduct(int id, tblShopProduct tblShopProduct)
+        public IHttpActionResult PuttblShopProduct(tblShopProduct tblShopProduct)
         {
             if (!ModelState.IsValid)
             {
@@ -77,11 +106,11 @@ namespace MyCityWepAPI.Controllers
                 db.Entry(ShopProduct).State = EntityState.Modified;
                 db.SaveChanges();
 
-                return Ok(new { code = 0, data = "Shop updated successfully.", id = tblShopProduct.ID });
+                return Ok(new { code = 0, data = "Shop Product updated successfully.", id = tblShopProduct.ID });
             }
             else
             {
-                return Ok(new { code = 1, data = "Shop not found." });
+                return Ok(new { code = 1, data = "Shop Product not found." });
             }
         }
 
@@ -107,13 +136,13 @@ namespace MyCityWepAPI.Controllers
             tblShopProduct tblShopProduct = db.tblShopProducts.Find(id);
             if (tblShopProduct == null)
             {
-                return NotFound();
+                return Ok(new { code = 2, data = "Shop Product not found" });
             }
 
             db.tblShopProducts.Remove(tblShopProduct);
             db.SaveChanges();
 
-            return Ok(tblShopProduct);
+            return Ok(new { code = 0, message = "Record deleted successfully" });
         }
 
         protected override void Dispose(bool disposing)

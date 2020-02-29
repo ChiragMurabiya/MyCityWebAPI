@@ -23,6 +23,7 @@
         <EntityTypeShape EntityType="ShoppyDBModel.tblShopProduct" Width="1.5" PointX="7.5" PointY="6.5" />
         <AssociationConnector Association="ShoppyDBModel.FK_tblShopProductImages_tblShopProducts" />
         <AssociationConnector Association="ShoppyDBModel.FK_tblShopProducts_tblShops" />
+        <EntityTypeShape EntityType="ShoppyDBModel.tblBanner" Width="1.5" PointX="10.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

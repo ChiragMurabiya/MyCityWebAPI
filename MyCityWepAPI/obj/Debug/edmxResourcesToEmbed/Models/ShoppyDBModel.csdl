@@ -247,6 +247,7 @@
       <End Role="tblShop" EntitySet="tblShops" />
       <End Role="tblShopProduct" EntitySet="tblShopProducts" />
     </AssociationSet>
+    <EntitySet Name="tblBanners" EntityType="ShoppyDBModel.tblBanner" />
   </EntityContainer>
   <EntityType Name="tblShopProductImage">
     <Key>
@@ -307,4 +308,17 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <EntityType Name="tblBanner">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ImageName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="ImagePath" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="Active" Type="Boolean" />
+    <Property Name="Created" Type="DateTime" Precision="3" />
+    <Property Name="CreatedBy" Type="Int32" />
+    <Property Name="Updated" Type="DateTime" Precision="3" />
+    <Property Name="UpdatedBy" Type="Int32" />
+  </EntityType>
 </Schema>
